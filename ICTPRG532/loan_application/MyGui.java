@@ -1,5 +1,6 @@
 package test3;
 
+import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 
@@ -19,18 +20,28 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MyGui {
@@ -157,7 +168,8 @@ public class MyGui {
 					PrintWriter writer = new PrintWriter(jsocket.getOutputStream(), true);
 					System.out.println("Sending a message sent to the server");
 					
-					writer.println("Applicant Name: " + clientName + "\nPrice: " + price + "\nAddress: " + address + "\nIncome: " + income);
+//					writer.println("Applicant Name: " + clientName + "\nPrice: " + price + "\nAddress: " + address + "\nIncome: " + income);
+					writer.println(address);
 					
 					BufferedReader reader = new BufferedReader(new InputStreamReader(jsocket.getInputStream()));
 					String from_server = reader.readLine();
@@ -232,6 +244,15 @@ public class MyGui {
 		btnCheckButton.setBounds(36, 200, 119, 23);
 		panel_2.add(btnCheckButton);
 		
+		JButton btnUpload = new JButton("Upload File");
+		btnUpload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new dnd();
+			}
+		});
+		btnUpload.setBounds(168, 200, 119, 23);
+		panel_2.add(btnUpload);
+		
 		frame.setVisible(true);
 	}
 	
@@ -243,4 +264,93 @@ public class MyGui {
 			income = textFieldIncome.getText();
 		}
 	}
+	
+	public class dnd extends JFrame implements DropTargetListener {
+		  /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+		DropTarget dt;
+		  JTextArea mytext = new JTextArea();
+		  public dnd() {
+		    super("My GUI DnD Demo");
+		    setSize(650, 480);
+		    getContentPane().add(new JLabel("Please drag a file and drop it here:"), BorderLayout.NORTH); // or JtextAarea
+		    
+		    
+		    getContentPane().add(mytext, BorderLayout.CENTER);
+		    dt = new DropTarget(mytext, this);
+		    // set the textfield as the drop target
+		    setVisible(true);
+		  }
+
+		  public void dragEnter(DropTargetDragEvent dtde) {
+		    // Drag Enter
+		  }
+
+		  public void dragExit(DropTargetEvent dte) {
+		   //Drag Exit
+		  }
+
+		  public void dragOver(DropTargetDragEvent dtde) {
+		    //Drag Over
+		  }
+
+		  public void dropActionChanged(DropTargetDragEvent dtde) {
+		    // When Drop Action is changed;
+		  }
+		 
+		  
+		  public void drop(DropTargetDropEvent dtde) {
+		    try {
+		      Transferable tr = dtde.getTransferable();
+		      DataFlavor[] flavors = tr.getTransferDataFlavors();
+		      // put data flavors in a array, consider the following data flavors:
+		      
+		      for (int i = 0; i < flavors.length; i++) {
+		    	  
+		        if (flavors[i].isFlavorJavaFileListType()) {
+		          dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+		          List list = (List) tr.getTransferData(flavors[i]);
+		          for (int j = 0; j < list.size(); j++) {
+		        	  mytext.setText("You dropped a file:"+"\n\n");
+		        	  mytext.append(list.get(j) + "\n");
+		        	  
+		          }
+		          dtde.dropComplete(true);
+		          return;
+		          
+		        } else if (flavors[i].isFlavorTextType()) {
+		            dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+		            mytext.setText("You dropped a text:"+"\n\n");
+		            String mystring = (String)tr.getTransferData(flavors[i]);
+		            mytext.append(mystring+"\n\n");
+		            dtde.dropComplete(true);
+		            return;
+		          }
+
+		         else if (flavors[i].isFlavorSerializedObjectType()) {
+		          dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+		          Object obj = tr.getTransferData(flavors[i]);
+		          mytext.setText("You dropped an Object"+"\n\n");
+		          mytext.append("Object: " + obj);
+		          dtde.dropComplete(true);
+		          return;
+		          
+		        } else if (flavors[i].isRepresentationClassInputStream()) {
+		          dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+		          mytext.read(new InputStreamReader((InputStream) tr.getTransferData(flavors[i])),
+		              "You dropped something from the clipboard"+"\n\n");
+		          dtde.dropComplete(true);
+		          return;
+		        }
+		      }
+		      dtde.rejectDrop();
+		    } catch (Exception ex) {
+		      ex.printStackTrace();
+		      
+		      dtde.rejectDrop();
+		    }
+		  }
+		}
 }
