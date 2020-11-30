@@ -57,11 +57,11 @@ public class MyGui {
 	private JLabel lblNewLabel_5;
 	private JTextField textFieldAddress;
 	private JButton btnCheckButton;
-	private JButton btnNewButton_2;
+	private JButton btnInspect;
 	private JTextArea textInspectAppraisal;
 	private JButton btnAppraisal;
 	private JButton btnApprove;
-	private JButton btnNewButton_5;
+	private JButton btnDecline;
 	private JTextArea textAreaApprove;
 	private JButton btnHelp;
 	
@@ -141,9 +141,9 @@ public class MyGui {
 		textAreaCredit.setBounds(36, 232, 573, 63);
 		panel_2.add(textAreaCredit);
 		
-		btnNewButton_2 = new JButton("House Inspect");
-		btnNewButton_2.setBounds(36, 313, 119, 23);
-		panel_2.add(btnNewButton_2);
+		btnInspect = new JButton("House Inspect");
+		btnInspect.setBounds(36, 313, 119, 23);
+		panel_2.add(btnInspect);
 		
 		textInspectAppraisal = new JTextArea();
 		textInspectAppraisal.setBounds(36, 345, 573, 49);
@@ -207,9 +207,9 @@ public class MyGui {
 		btnApprove.setBounds(36, 415, 119, 23);
 		panel_2.add(btnApprove);
 		
-		btnNewButton_5 = new JButton("Decline");
-		btnNewButton_5.setBounds(168, 415, 119, 23);
-		panel_2.add(btnNewButton_5);
+		btnDecline = new JButton("Decline");
+		btnDecline.setBounds(168, 415, 119, 23);
+		panel_2.add(btnDecline);
 		
 		textAreaApprove = new JTextArea();
 		textAreaApprove.setBounds(36, 447, 573, 49);

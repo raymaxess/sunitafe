@@ -43,15 +43,12 @@ public class server {
             if(clientSocket != null){
                System.out.println("Client/Server binding done! Socket: " + clientSocket.toString());}
                            
-            			
  			BufferedReader sbr = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
  			//BufferedWriter sbw = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
  		    
  			//Try PrintStream, it supports println() method.             
              PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true);
-  
-             
-             
+
             while (true) {
               line = sbr.readLine();
               
@@ -59,9 +56,7 @@ public class server {
              	 {
             	  	System.out.println("Client message --> " + line);
             	  	System.out.println(address.findAddress(line));
-            	  
 //            	  	System.out.println("A message is received from the client: "+ line +"\n" + "Start processing request...");
-
              	 	pw.println(line); 
              	 }
               else 
