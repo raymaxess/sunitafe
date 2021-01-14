@@ -8,9 +8,9 @@ import java.util.Scanner;
 public class clientPython {
 
 	public static void main(String[] args) throws IOException {
-		InetAddress ip = InetAddress.getByName("127.0.0.1");  
+		InetAddress ip = InetAddress.getByName("127.0.0.1");
 		ClientConnect clientConnect = new ClientConnect(ip, 65000);
-		
+		//
 //		clientConnect.send("my test");
 		clientConnect.chat();
 
@@ -59,8 +59,8 @@ class ClientConnect {
         scan.close();
     }
 
-    public void chat() throws IOException 
-    {    
+    public void chat() throws IOException
+    {
         String response = "s";
 
         System.out.println("Initiating Chat Sequence");
